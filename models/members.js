@@ -31,6 +31,12 @@ module.exports = {
         group_id: member.group_id,
         fullname: member.fullname
       });
+  },
+
+  remove: function (db, id) {
+    return db('test_members')
+      .where('id', id)
+      .del();
   }
 
 }

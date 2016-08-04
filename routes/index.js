@@ -110,6 +110,19 @@ router.get('/members/:id', function (req, res) {
     });
 })
 
+router.delete('/members/:id', function (req, res) {
+  var id = req.params.id;
+  var db = req.db;
+
+  Members.remove(db, id)
+    .then(function () {
+      res.send({ ok: true })
+    })
+    .catch(function (err) {
+      res.send({ ok: false, msg: err })
+    });
+})
+
 
 router.get('/groups', function (req, res) {
   var db = req.db;

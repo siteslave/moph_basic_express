@@ -23,20 +23,41 @@ angular.module('app', ['ui.router'])
   })  
 
   .controller('MainCtrl', function ($scope, $state, MemberService) {
-    MemberService.getList()
-      .success(function (data) {
-        if (data.ok) {
-          $scope.members = data.rows
-        } else {
-          console.log(data.msg)
-        }
-      })
-      .error(function () {
-        console.log('การเชื่อมต่อผิดพลาด')
-      });
+
+    $scope.getList = function () {
+      MemberService.getList()
+        .success(function (data) {
+          if (data.ok) {
+            $scope.members = data.rows
+          } else {
+            console.log(data.msg)
+          }
+        })
+        .error(function () {
+          console.log('การเชื่อมต่อผิดพลาด')
+        });
+    }    
+
+    $scope.getList();
     
     $scope.edit = function (id) {
       $state.go('edit', { id: id });
+    }
+
+    $scope.remove = function (id) {
+      if (confirm('Are you sure?')) {
+        MemberService.remove(id)
+        .success(function (data) {
+          if (data.ok) {
+            $scope.getList();
+          } else {
+            console.log(data.msg);
+          }
+        })
+        .error(function () {
+          console.log('Connection failed!')
+        });
+      }
     }
     
   })
@@ -145,6 +166,9 @@ angular.module('app', ['ui.router'])
       },
       update: function (member) {
         return $http.put('/members', { member: member })
+      },
+      remove: function (id) {
+        return $http.delete('/members/' + id)
       }
     }
   })
