@@ -15,9 +15,14 @@ angular.module('app', ['ui.router'])
         templateUrl: '/partials/new.html',
         controller: 'NewCtrl'
       })
+      .state('edit', {
+        url: '/edit/:id',
+        templateUrl: '/partials/edit.html',
+        controller: 'EditCtrl'
+      })
   })  
 
-  .controller('MainCtrl', function ($scope, MemberService) {
+  .controller('MainCtrl', function ($scope, $state, MemberService) {
     MemberService.getList()
       .success(function (data) {
         if (data.ok) {
@@ -29,6 +34,11 @@ angular.module('app', ['ui.router'])
       .error(function () {
         console.log('การเชื่อมต่อผิดพลาด')
       });
+    
+    $scope.edit = function (id) {
+      $state.go('edit', { id: id });
+    }
+    
   })
 
   .controller('NewCtrl', function ($scope, $state, MemberService) {
@@ -69,6 +79,56 @@ angular.module('app', ['ui.router'])
 
   })
 
+  .controller('EditCtrl', function ($scope, $state,
+    $stateParams,
+    MemberService) {
+    var id = $stateParams.id;
+
+    MemberService.getGroups()
+      .success(function (data) {
+        if (data.ok) {
+          $scope.groups = data.rows;
+        } else {
+          console.log(data.msg);
+        }
+      });
+    
+    MemberService.detail(id)
+      .success(function (data) {
+        if (data.ok) {
+          $scope.member = data.member;
+          $scope.selectedGroup = $scope.member.group_id;
+        } else {
+          console.log(data.msg)
+        }
+      })
+      .error(function () {
+        console.log('Connection error')
+      });
+    
+
+    $scope.save = function () {
+      var member = {};
+      member.id = id;
+      member.fullname = $scope.member.fullname;
+      member.group_id = $scope.selectedGroup;
+
+      MemberService.update(member)
+        .success(function (data) {
+          if (data.ok) {
+            $state.go('main')
+          } else {
+            alert(JSON.stringify(data.msg))
+          }
+        })
+        .error(function () {
+          console.log('Connection failed!')
+        });
+    }
+
+    
+  })
+
   .factory('MemberService', function ($http) {
     return {
       getList: function () {
@@ -79,6 +139,12 @@ angular.module('app', ['ui.router'])
       },
       save: function (member) {
         return $http.post('/members', { member: member });
+      },
+      detail: function (id) {
+        return $http.get('/members/' + id)
+      },
+      update: function (member) {
+        return $http.put('/members', { member: member })
       }
     }
   })

@@ -82,6 +82,35 @@ router.post('/members', function (req, res) {
   
 })
 
+router.put('/members', function (req, res) {
+  var db = req.db;
+
+  var member = req.body.member;
+   
+  Members.update(db, member)
+    .then(function () {
+      res.send({ ok: true })
+    })
+    .catch(function (err) {
+      res.send({ ok: false, msg: err })
+    });
+})
+
+router.get('/members/:id', function (req, res) {
+  var db = req.db;
+  var id = req.params.id;
+
+  Members.detail(db, id)
+    .then(function (rows) {
+      res.send({ ok: true, member: rows[0] });
+      // members = {id: 1, fullname: 'xxx', username: 'xxx', ...}
+    })
+    .catch(function (err) {
+      res.send({ ok: false, msg: err });
+    });
+})
+
+
 router.get('/groups', function (req, res) {
   var db = req.db;
   

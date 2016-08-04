@@ -15,7 +15,7 @@ Members list
       <td>{{ member.fullname }}</td>
       <td>{{ member.group_name }}</td>
       <td>
-        <button type="button">Edit</button>
+        <button ng-click="edit(member.id)" type="button">Edit</button>
         <button type="button">Remove</button>
       </td>
     </tr>
