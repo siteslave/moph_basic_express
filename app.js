@@ -22,10 +22,21 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-var hello = function (req, res, next) {
-  console.log('Hello world!');
+var db = require('knex')({
+  client: 'mysql',
+  connection: {
+    host: '203.157.102.69',
+    port: 3306,
+    database: 'hdc',
+    user: 'hdc',
+    password: 'Training@Angular'
+  }
+});
+
+app.use(function (req, res, next) {
+  req.db = db;
   next();
-} 
+});
 
 app.use('/', routes);
 app.use('/users', users);

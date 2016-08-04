@@ -1,0 +1,23 @@
+Members list
+
+<table>
+  <thead>
+    <tr>
+      <th>Username</th>
+      <th>Fullname</th>
+      <th>Group Name</th>
+      <th>#</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="member in members">
+      <td>{{ member.username }}</td>
+      <td>{{ member.fullname }}</td>
+      <td>{{ member.group_name }}</td>
+      <td>
+        <button type="button">Edit</button>
+        <button type="button">Remove</button>
+      </td>
+    </tr>
+  </tbody>
+</table>

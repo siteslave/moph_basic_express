@@ -1,10 +1,12 @@
 extends layout
 
 block content
-  div(ng-controller="MainCtrl")
-    h1 {{ name }}
 
-block menu
-  ul
-    each fruit in fruits 
-      li= fruit
+  a(href="#/") Main
+  | &nbsp; | &nbsp;
+  a(href="#/new") New
+
+  hr 
+
+  ui-view
+    

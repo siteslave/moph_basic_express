@@ -1,0 +1,41 @@
+New Member
+<hr>
+<form name="frmAdd">
+
+  <table>
+    <tr>
+      <td>Fullname</td>
+      <td>
+        <input type="text" ng-model="fullname" ng-required="true">
+      </td>
+    </tr>
+    <tr>
+      <td>Username</td>
+      <td>
+        <input type="text" ng-model="username" ng-required="true">
+      </td>
+    </tr>
+    <tr>
+      <td>Password</td>
+      <td>
+        <input type="password" ng-model="password" ng-required="true">
+      </td>
+    </tr>
+    <tr>    
+      <td>Group</td>
+      <td>
+        <select ng-model="group_id">
+          <option value="{{group.id}}" ng-repeat="group in groups">{{ group.name }}</option>
+        </select>
+      </td>
+    </tr>
+
+    <tr>
+      <td colspan="2">
+        <button ng-click="save()" type="button" ng-disabled="frmAdd.$invalid">Save</button>
+      </td>
+    </tr>
+
+  </table>
+
+</form>
